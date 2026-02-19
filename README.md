@@ -14,3 +14,7 @@ All notes by module.
 ### the projects
 - timestamp microservice [here](./backend-dev-and-apis/project-timestamp/README.md)
 - request header parser microservice [here](./backend-dev-and-apis/project-headerparser/README.md)
+
+
+## the freeCodeCamp data analysis with python certification
+All notes related to [here](./data-analysis-with-python/README.md)
