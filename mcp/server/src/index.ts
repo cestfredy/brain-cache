@@ -1,36 +1,52 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
-import { graph } from "./msgraph.js";
 
-// création du serveur mcp !
 const server = new McpServer({
     name: "learn-mcp-server",
     version: "1.0.0"
 });
 
 server.registerTool(
-    "getUserProfile",
+    "calculator",
     {
-        title: "Get User Profile",
-        description: "Récupère le profil de l'utilisateur connecté",
-        inputSchema: {
-            accessToken: z.string()
-        },
+        title: "Calculator",
+        description: "Effectue des opérations mathématiques simples (+, -, *, /)",
+        inputSchema: z.object({
+            operation: z.enum(["add", "subtract", "multiply", "divide"]),
+            a: z.number(),
+            b: z.number()
+        })
     },
-    async ({ accessToken }) => {
+    async ({ operation, a, b }) => {
         try {
-            const user = await graph.getUserProfile(accessToken);
+            let result: number;
+            
+            switch (operation) {
+                case "add":
+                    result = a + b;
+                    break;
+                case "subtract":
+                    result = a - b;
+                    break;
+                case "multiply":
+                    result = a * b;
+                    break;
+                case "divide":
+                    if (b === 0) throw new Error("Division par zéro impossible");
+                    result = a / b;
+                    break;
+            }
+
             return {
                 content: [{ 
                     type: "text", 
-                    text: `User: ${user.displayName} (${user.userPrincipalName})` 
-                }],
-                structuredContent: user
+                    text: `Résultat: ${a} ${operation} ${b} = ${result}` 
+                }]
             };
         } catch (error: any) {
             return {
-                content: [{ type: "text", text: `Error: ${error.message}` }],
+                content: [{ type: "text", text: `Erreur: ${error.message}` }],
                 isError: true
             };
         }
@@ -38,208 +54,143 @@ server.registerTool(
 );
 
 server.registerTool(
-    "getSites",
+    "randomText",
     {
-        title: "Get SharePoint Sites",
-        description: "Récupère la liste des sites SharePoint",
-        inputSchema: {
-            accessToken: z.string(),
-            search: z.string().optional()
-        },
+        title: "Random Text Generator",
+        description: "Génère un texte aléatoire selon un template",
+        inputSchema: z.object({
+            type: z.enum(["greeting", "quote", "fact"])
+        })
     },
-    async ({ accessToken, search }) => {
-        try {
-            const sites = await graph.getSites(accessToken, search);
-            return {
-                content: [{ 
-                    type: "text", 
-                    text: `Found ${sites.length} site(s)` 
-                }],
-                structuredContent: { sites, count: sites.length }
-            };
-        } catch (error: any) {
-            return {
-                content: [{ type: "text", text: `Error: ${error.message}` }],
-                isError: true
-            };
-        }
+    async ({ type }) => {
+        const data = {
+            greeting: [
+                "Bonjour ! Comment puis-je vous aider ?",
+                "Salut ! Ravi de vous voir !",
+                "Hello ! Que puis-je faire pour vous ?"
+            ],
+            quote: [
+                "Le succès est un voyage, pas une destination.",
+                "Chaque jour est une nouvelle opportunité.",
+                "L'échec est le fondement du succès."
+            ],
+            fact: [
+                "Les pieuvres ont trois cœurs.",
+                "Le miel ne périme jamais.",
+                "Un jour sur Vénus dure plus longtemps qu'une année."
+            ]
+        };
+
+        const items = data[type];
+        const random = items[Math.floor(Math.random() * items.length)] || "Aucun élément disponible";
+
+        return {
+            content: [{ 
+                type: "text", 
+                text: random
+            }]
+        };
     }
 );
 
 server.registerTool(
-    "getSiteById",
+    "validateEmail",
     {
-        title: "Get Site By ID",
-        description: "Récupère un site SharePoint par son ID",
-        inputSchema: {
-            accessToken: z.string(),
-            siteId: z.string()
-        },
+        title: "Email Validator",
+        description: "Vérifie si un email est valide (format basique)",
+        inputSchema: z.object({
+            email: z.string()
+        })
     },
-    async ({ accessToken, siteId }) => {
-        try {
-            const site = await graph.getSiteById(accessToken, siteId);
-            return {
-                content: [{ 
-                    type: "text", 
-                    text: `Site: ${site.displayName}` 
-                }],
-                structuredContent: site
-            };
-        } catch (error: any) {
-            return {
-                content: [{ type: "text", text: `Error: ${error.message}` }],
-                isError: true
-            };
-        }
+    async ({ email }) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const isValid = emailRegex.test(email);
+
+        return {
+            content: [{ 
+                type: "text", 
+                text: isValid 
+                    ? `✅ L'email "${email}" est valide` 
+                    : `❌ L'email "${email}" n'est pas valide`
+            }]
+        };
     }
 );
 
-server.registerTool(
-    "getSiteByUrl",
+server.registerResource(
+    "countries",
+    "data://countries",
     {
-        title: "Get Site By URL",
-        description: "Récupère un site SharePoint par son URL",
-        inputSchema: {
-            accessToken: z.string(),
-            hostname: z.string(),
-            serverRelativeUrl: z.string()
-        },
+        description: "Une liste de pays avec leurs capitales",
+        mimeType: "application/json"
     },
-    async ({ accessToken, hostname, serverRelativeUrl }) => {
-        try {
-            const site = await graph.getSiteByUrl(accessToken, hostname, serverRelativeUrl);
-            return {
-                content: [{ 
-                    type: "text", 
-                    text: `Site: ${site.displayName}` 
-                }],
-                structuredContent: site
-            };
-        } catch (error: any) {
-            return {
-                content: [{ type: "text", text: `Error: ${error.message}` }],
-                isError: true
-            };
-        }
+    async () => {
+        const countries = [
+            { name: "France", capital: "Paris", population: 67000000 },
+            { name: "Cameroun", capital: "Yaoundé", population: 27000000 },
+            { name: "Canada", capital: "Ottawa", population: 38000000 },
+            { name: "Japon", capital: "Tokyo", population: 125000000 }
+        ];
+
+        return {
+            contents: [{
+                uri: "data://countries",
+                mimeType: "application/json",
+                text: JSON.stringify(countries, null, 2)
+            }]
+        };
     }
 );
 
-
-server.registerTool(
-    "getRootSite",
+server.registerPrompt(
+    "analyze-data",
     {
-        title: "Get Root Site",
-        description: "Récupère le site racine SharePoint",
-        inputSchema: {
-            accessToken: z.string()
-        },
-    },
-    async ({ accessToken }) => {
-        try {
-            const site = await graph.getRootSite(accessToken);
-            return {
-                content: [{ 
-                    type: "text", 
-                    text: `Root Site: ${site.displayName}` 
-                }],
-                structuredContent: site
-            };
-        } catch (error: any) {
-            return {
-                content: [{ type: "text", text: `Error: ${error.message}` }],
-                isError: true
-            };
+        title: "Analyse de Données",
+        description: "Génère un prompt pour analyser des données",
+        argsSchema: {
+            dataType: z.string().describe("Type de données à analyser"),
+            focus: z.string().optional().describe("Aspect à analyser en priorité")
         }
+    },
+    async ({ dataType, focus }) => {
+        const focusText = focus ? ` avec un focus sur ${focus}` : "";
+        
+        return {
+            messages: [
+                {
+                    role: "user",
+                    content: {
+                        type: "text",
+                        text: `Analyse les données de type "${dataType}"${focusText}. Fournis un résumé clair avec les points clés, tendances et recommandations.`
+                    }
+                }
+            ]
+        };
     }
 );
 
-server.registerTool(
-    "getSiteLists",
+server.registerPrompt(
+    "code-helper",
     {
-        title: "Get Site Lists",
-        description: "Récupère les listes d'un site SharePoint",
-        inputSchema: {
-            accessToken: z.string(),
-            siteId: z.string()
-        },
-    },
-    async ({ accessToken, siteId }) => {
-        try {
-            const lists = await graph.getSiteLists(accessToken, siteId);
-            return {
-                content: [{ 
-                    type: "text", 
-                    text: `Found ${lists.length} list(s)` 
-                }],
-                structuredContent: { lists, count: lists.length }
-            };
-        } catch (error: any) {
-            return {
-                content: [{ type: "text", text: `Error: ${error.message}` }],
-                isError: true
-            };
+        title: "Assistant Code",
+        description: "Génère un prompt pour obtenir de l'aide en programmation",
+        argsSchema: {
+            language: z.string().describe("Langage de programmation"),
+            task: z.string().describe("Tâche à accomplir")
         }
-    }
-);
-
-server.registerTool(
-    "getListById",
-    {
-        title: "Get List By ID",
-        description: "Récupère une liste SharePoint par son ID",
-        inputSchema: {
-            accessToken: z.string(),
-            siteId: z.string(),
-            listId: z.string()
-        },
     },
-    async ({ accessToken, siteId, listId }) => {
-        try {
-            const list = await graph.getListById(accessToken, siteId, listId);
-            return {
-                content: [{ 
-                    type: "text", 
-                    text: `List: ${list.displayName || list.name}` 
-                }],
-                structuredContent: list
-            };
-        } catch (error: any) {
-            return {
-                content: [{ type: "text", text: `Error: ${error.message}` }],
-                isError: true
-            };
-        }
-    }
-);
-
-server.registerTool(
-    "getListColumns",
-    {
-        title: "Get List Columns",
-        description: "Récupère les colonnes d'une liste SharePoint",
-        inputSchema: {
-            accessToken: z.string(),
-            siteId: z.string(),
-            listId: z.string()
-        },
-    },
-    async ({ accessToken, siteId, listId }) => {
-        try {
-            const columns = await graph.getListColumns(accessToken, siteId, listId);
-            return {
-                content: [{
-                    type: "text", 
-                    text: `Found ${columns.length} column(s)` 
-                }],
-                structuredContent: { columns, count: columns.length }
-            };
-        } catch (error: any) {
-            return {
-                content: [{ type: "text", text: `Error: ${error.message}` }],
-                isError: true
-            };
-        }
+    async ({ language, task }) => {
+        return {
+            messages: [
+                {
+                    role: "user",
+                    content: {
+                        type: "text",
+                        text: `En ${language}, écris du code pour: ${task}. Inclus des commentaires explicatifs et des bonnes pratiques.`
+                    }
+                }
+            ]
+        };
     }
 );
 
