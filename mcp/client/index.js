@@ -3,7 +3,7 @@ import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js"
 import readline from "readline/promises";
 import { GoogleGenAI } from "@google/genai";
 
-const GEMINI_API_KEY = "AIzaSyCoTFx1MSRWq1CtQTkhOJWA_WxfaPp3K9E";
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const MODEL = "gemini-2.5-flash";
 if (!GEMINI_API_KEY || !MODEL) throw new Error("Missing GEMINI_API_KEY");
 
