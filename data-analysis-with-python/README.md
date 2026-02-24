@@ -16,6 +16,8 @@ The data analysis process :
     - *df.info()* to quickly understand the data we are working with, it help us to have a better structure of our data
     - *df.describe()* to have a statistical understanding of our data, it help us to have a quick statistical view of our data
     - *df.corr()* to fastly get the correlation between properties
+    - *df.loc[]* to make a selection using rows or columns name
+    
 
 3. How to use Jupyter Notebooks
 4. Intro to NumPy
