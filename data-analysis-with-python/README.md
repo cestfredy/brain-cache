@@ -8,7 +8,15 @@ The data analysis process :
 
 ![Data Analysis process](./pics/process.png)
 
-2. Real example Data Analysis with Python
+2. Real example Data Analysis with 
+
+- Data analysis Example :
+    - *df.head()* by default let us see the first 5 lignes of our dataset
+    - *df.shape* tell us how many rows and columns we have
+    - *df.info()* to quickly understand the data we are working with, it help us to have a better structure of our data
+    - *df.describe()* to have a statistical understanding of our data, it help us to have a quick statistical view of our data
+    - *df.corr()* to fastly get the correlation between properties
+
 3. How to use Jupyter Notebooks
 4. Intro to NumPy
 5. Intro to Pandas
