@@ -50,3 +50,14 @@ Les cas d'usage les plus répandu de la VO :
 - recherche visuelle
 - Agent ia capable de voir
 - sous-titrage automatique
+
+## Extraction d'information
+L'une des technologie les plus populaire ici est l'OCR (Optical Caracter Recognition) pour l'extraction d'insight dans une images.
+
+ces cas d'usages sont les suivant :
+- traitement automatique de formulaire ou d'autres documents dans un process metier
+- numerisation de donées provenant de formulaires papiers
+- indexation de documents pour la recherche
+- identification des points clé a partir de transcription ou de l'enregistrement de reunion
+
+
