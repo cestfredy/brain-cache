@@ -40,3 +40,13 @@ les cas d'usages les plus courants :
 - automatisation des description audio/video/texte
 - traduction vocale entre langue
 - classification d'audio
+
+## Vision par ordinateur
+C'est le domaine de l'ia qui traite de l'analyse de de l'entrée visuelle (images, videos, flux caméras en direct)
+
+Les cas d'usage les plus répandu de la VO :
+- surveillance de vidéo securité
+- authentification par reconnaissance faciale
+- recherche visuelle
+- Agent ia capable de voir
+- sous-titrage automatique
