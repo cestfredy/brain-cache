@@ -64,3 +64,5 @@ Ici nous avons **un seul serveur** qui reçoit et traite les requetes d'un ou pl
 Le croquis d'une architecture de ce type peut ressembler a ceci :
 
 ![monolithic arch](./pics/mono.png)
+
+C'est sa simplicité qui est le plus grand avantage de cette approche. Notons que c'est comme ça que commence la plus part des applications.
