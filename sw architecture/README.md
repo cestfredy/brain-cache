@@ -51,3 +51,16 @@ La modularité en architecture logiciel c'est la capacité a diviser de grosse c
 la modularité a beaucoup d'avantage :
 - ça donne une bonne organisation et une meilleur visualisation du projet
 - chaque module peut être testé séparement ce qui rend le projet plus facile a maintenir et a debuger
+
+### À quoi ressemble ton infrastructure ?
+Oui il y'a plusieurs maniere d'organiser notre code et la structure du projet. Mais comment mettons nous en place l'infrastructure deriere notre projet ?
+
+#### Architecture Monolithic
+
+C'est ce qu'on a l'habiture de voir et de construire car il est simple comprendre et très facile à implémenter.
+
+Ici nous avons **un seul serveur** qui reçoit et traite les requetes d'un ou plusieurs clients (web, mobile, TV, etc...).
+
+Le croquis d'une architecture de ce type peut ressembler a ceci :
+
+![monolithic arch](./pics/mono.png)
