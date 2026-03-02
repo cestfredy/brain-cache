@@ -66,3 +66,29 @@ Le croquis d'une architecture de ce type peut ressembler a ceci :
 ![monolithic arch](./pics/mono.png)
 
 C'est sa simplicité qui est le plus grand avantage de cette approche. Notons que c'est comme ça que commence la plus part des applications.
+
+#### Architecture Micoservices
+
+Maintenant imaginons qu'on commence à recevoir des centaines de milliers d'utilisateurs. C'est génial pour notre businness mais pas beau à voir pour notre app monolith 🤣
+
+Pour résoudre ce problème, l'idéal c'est d'implémenter une architechture microservice ou chaque microservice effectue un groupe d'opération bien précis (comme gérer uniquement les paiements).
+
+Voici a quoi pourrai ressembler le croquis d'une tel arch : 
+
+![microservices arch](./pics/micro.png)
+
+On sépare notre serveur qui gère de grosses taches en petits serveurs chacun chargé d'une fonctionnalité ou d'un groupe de fontionnalités bien précis.
+
+Au lieu d'un seul serveur nous en avons plusieurs qui se charge d'un tache donnée.
+ça parait plus complexe ;) ça l'est mais ça vient avec beaucoup d'avantage :
+
+- on peut scaler un service spécifique comme on le souhaite au lieu de scaler l'entiereté du backend par ce que tous les services ne requieres pas plus de ressources
+
+- opérations seront beaucoup moins interdépendant et pourront être developé et deployé de maniere indépendante
+
+- la base de code sera très flexible. tu peux travailler sur un service spécifique sans avoir besoin de comprendre l'entiereté du system
+
+
+L'architecture microservice est complexe a mettre en place et a manager. C'est aussi pour ça qu'il n'a de sens que pour les gros projets.
+
+> Habituellement on commence avec monolith et on migre vers microservices quand nécessage plus pour des raison de performance !
