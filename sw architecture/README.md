@@ -31,4 +31,16 @@ La chose a retenir ici c'est simplement que le client demande des ressources ou 
 
 Il est également important de toujours prendre en compte que le client et le serveur peuvent être developé, hebergé et exécuté séparement.
 
+### C'est quoi les APIs ?
+On peut dire que c'est un ensemble de regles qui régissent la communication d'applications entre elles.
 
+par exemple l'app X dit a Y que si tu me dit A je vais toujours de repondre B.
+
+Là Y sait exaction quoi dire pour obtenir B de X.
+
+API signifie Application PRogramming Interface :)
+
+Il existe plusieurs chemins par lesquels des API peuvent être conçu. Les plus populaires sont :
+- RESt
+- SOAP
+- GraphQL
