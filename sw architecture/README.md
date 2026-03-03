@@ -65,11 +65,11 @@ Le croquis d'une architecture de ce type peut ressembler a ceci :
 
 ![monolithic arch](./pics/mono.png)
 
-C'est sa simplicité qui est le plus grand avantage de cette approche. Notons que c'est comme ça que commence la plus part des applications.
+C'est sa simplicité qui est le plus grand avantage de cette approche. Notons que c'est ainsi que débute la plus part des applications.
 
-#### Architecture Micoservices
+#### Architecture Microservices
 
-Maintenant imaginons qu'on commence à recevoir des centaines de milliers d'utilisateurs. C'est génial pour notre businness mais pas beau à voir pour notre app monolith 🤣
+Maintenant imaginons qu'on commence à recevoir des centaines de milliers d'utilisateurs. C'est génial pour notre business mais pas beau à voir pour notre app monolith 🤣
 
 Pour résoudre ce problème, l'idéal c'est d'implémenter une architechture microservice ou chaque microservice effectue un groupe d'opération bien précis (comme gérer uniquement les paiements).
 
