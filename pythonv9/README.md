@@ -24,3 +24,11 @@ Questions :
 - download on python.org
 - check the version with python --version
 - you can open the interpreter with py, python
+
+
+## How do you declare and use variables ?
+variables names rules :
+- only start with a letter or undescore, not a number
+- only contain alpahnumeric char and undescore
+- are case-sensitive
+- cannot be one of python's reserved keywords like if, class, def
