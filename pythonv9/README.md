@@ -19,3 +19,8 @@ Questions :
     * FastAPI
     * Flask
 
+
+## How Do You install, config an use python in your local env ?
+- download on python.org
+- check the version with python --version
+- you can open the interpreter with py, python
